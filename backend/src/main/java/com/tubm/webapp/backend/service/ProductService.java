@@ -1,45 +1,35 @@
 package com.tubm.webapp.backend.service;
 
 import java.util.List;
-import java.util.ArrayList;
 
 import com.tubm.webapp.backend.model.Product;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.tubm.webapp.backend.repository.ProductRepository;
 
 @Service
 public class ProductService {
 
-    List<Product> products = new ArrayList<Product>();
-
-    public ProductService() {
-        products.add(new Product(1, "Product 1", 100.00));
-        products.add(new Product(2, "Product 2", 200.00));
-        products.add(new Product(3, "Product 3", 300.00));
-    }
+    @Autowired
+    private ProductRepository repo;
 
     public List<Product> getProducts() {
-        return products;
+        return repo.findAll();
     }
 
     public Product getProductById(int id) {
-        return products.stream()
-                .filter(product -> product.getId() == id)
-                .findFirst()
-                .orElse(null);
+        return repo.findById(id).orElse(null);
     }
 
     public void addProduct(Product product) {
-        products.add(product);
+        repo.save(product);
     }
 
     public void deleteProduct(int id) {
-        products.removeIf(product -> product.getId() == id);
+        repo.deleteById(id);
     }
 
     public void updateProduct(int id, Product product) {
-        products.stream()
-                .filter(p -> p.getId() == id)
-                .findFirst()
-                .ifPresent(p -> p.setName(product.getName()));
+        repo.findById(id).ifPresent(p -> p.setName(product.getName()));
     }
 }
