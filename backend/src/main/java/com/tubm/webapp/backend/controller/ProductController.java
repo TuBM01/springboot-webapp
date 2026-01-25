@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,5 +63,12 @@ public class ProductController {
     @PutMapping("/products/{id}")
     public void updateProduct(@PathVariable int id, @RequestBody Product product) {
         prodService.updateProduct(id, product);
+    }
+
+    @GetMapping("/products/{id}/image")
+    public ResponseEntity<byte[]> getImageByProductId(@PathVariable int id) {
+        Product product = prodService.getProductById(id);
+        byte[] imageData = product.getImageData();
+        return new ResponseEntity<>(imageData, HttpStatus.OK);
     }
 }
