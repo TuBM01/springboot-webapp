@@ -20,10 +20,10 @@ public class BackendApplication {
 	public CommandLineRunner testConnection(DataSource dataSource) {
 		return args -> {
 			try (Connection conn = dataSource.getConnection()) {
-				System.out.println("--- KẾT NỐI POSTGRES THÀNH CÔNG! ---");
+				System.out.println("--- CONNECT SUCCESS ---");
 				System.out.println("Database: " + conn.getMetaData().getDatabaseProductName());
 			} catch (Exception e) {
-				System.out.println("--- KẾT NỐI THẤT BẠI: " + e.getMessage());
+				System.out.println("--- CONNECT FAILED: " + e.getMessage());
 			}
 		};
 	}

@@ -6,6 +6,8 @@ import com.tubm.webapp.backend.service.ProductService;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,19 +27,17 @@ public class ProductController {
     @Autowired
     private ProductService prodService;
 
-    @GetMapping("/")
-    public String hello() {
-        return "Hello World";
-    }
-
     @GetMapping("/products")
-    public List<Product> getAllProducts() {
-        return prodService.getProducts();
+    public ResponseEntity<List<Product>> getAllProducts() {
+        return new ResponseEntity<>(prodService.getProducts(), HttpStatus.OK);
     }
 
     @GetMapping("/products/{id}")
-    public Product getProductById(@PathVariable int id) {
-        return prodService.getProductById(id);
+    public ResponseEntity<Product> getProductById(@PathVariable int id) {
+        if (prodService.getProductById(id) == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(prodService.getProductById(id), HttpStatus.OK);
     }
 
     @PostMapping("/products")
