@@ -31,4 +31,15 @@ public class ProductService {
     public void addProduct(Product product) {
         products.add(product);
     }
+
+    public void deleteProduct(int id) {
+        products.removeIf(product -> product.getId() == id);
+    }
+
+    public void updateProduct(int id, Product product) {
+        products.stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .ifPresent(p -> p.setName(product.getName()));
+    }
 }

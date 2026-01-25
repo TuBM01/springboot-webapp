@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 public class ProductController {
@@ -31,5 +33,15 @@ public class ProductController {
     @PostMapping("/products")
     public void addProduct(@RequestBody Product product) {
         prodService.addProduct(product);
+    }
+
+    @DeleteMapping("/products/{id}")
+    public void deleteProduct(@PathVariable int id) {
+        prodService.deleteProduct(id);
+    }
+
+    @PutMapping("/products/{id}")
+    public void updateProduct(@PathVariable int id, @RequestBody Product product) {
+        prodService.updateProduct(id, product);
     }
 }
