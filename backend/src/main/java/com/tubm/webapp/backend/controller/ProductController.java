@@ -68,7 +68,16 @@ public class ProductController {
     @GetMapping("/products/{id}/image")
     public ResponseEntity<byte[]> getImageByProductId(@PathVariable int id) {
         Product product = prodService.getProductById(id);
+        String imageType = product.getImageType();
         byte[] imageData = product.getImageData();
-        return new ResponseEntity<>(imageData, HttpStatus.OK);
+
+        // Nên kiểm tra null để tránh lỗi sập App
+        if (imageData == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf(imageType))
+                .body(imageData);
     }
 }
