@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
@@ -32,4 +33,10 @@ public class Product {
     private Date releaseDate;
     private Boolean available;
     private Integer quantity;
+
+    private String imageName;
+    private String imageType;
+
+    @Lob
+    private byte[] imageData;
 }
