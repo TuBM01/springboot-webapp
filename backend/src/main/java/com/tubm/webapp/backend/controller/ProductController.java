@@ -13,15 +13,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
+@RequestMapping("/api")
 public class ProductController {
 
     @Autowired
     private ProductService prodService;
 
+    @GetMapping("/")
+    public String hello() {
+        return "Hello World";
+    }
+
     @GetMapping("/products")
-    public List<Product> getProducts() {
+    public List<Product> getAllProducts() {
         return prodService.getProducts();
     }
 
@@ -32,6 +39,7 @@ public class ProductController {
 
     @PostMapping("/products")
     public void addProduct(@RequestBody Product product) {
+        System.out.println(product);
         prodService.addProduct(product);
     }
 
