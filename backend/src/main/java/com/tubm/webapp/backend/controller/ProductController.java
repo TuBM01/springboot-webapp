@@ -1,12 +1,15 @@
 package com.tubm.webapp.backend.controller;
 
 import com.tubm.webapp.backend.model.Product;
+import com.tubm.webapp.backend.service.ProductService;
 
 import java.util.List;
 
-import com.tubm.webapp.backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,5 +21,15 @@ public class ProductController {
     @GetMapping("/products")
     public List<Product> getProducts() {
         return prodService.getProducts();
+    }
+
+    @GetMapping("/products/{id}")
+    public Product getProductById(@PathVariable int id) {
+        return prodService.getProductById(id);
+    }
+
+    @PostMapping("/products")
+    public void addProduct(@RequestBody Product product) {
+        prodService.addProduct(product);
     }
 }

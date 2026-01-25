@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductService {
 
-    List<Product> products = new ArrayList<>();
+    List<Product> products = new ArrayList<Product>();
 
     public ProductService() {
         products.add(new Product(1, "Product 1", 100.00));
@@ -19,5 +19,16 @@ public class ProductService {
 
     public List<Product> getProducts() {
         return products;
+    }
+
+    public Product getProductById(int id) {
+        return products.stream()
+                .filter(product -> product.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
     }
 }
