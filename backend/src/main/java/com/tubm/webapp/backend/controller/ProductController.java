@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 
 @RestController
@@ -56,13 +57,28 @@ public class ProductController {
     }
 
     @DeleteMapping("/products/{id}")
-    public void deleteProduct(@PathVariable int id) {
+    public ResponseEntity<Product> deleteProduct(@PathVariable int id) {
+        Product product = prodService.getProductById(id);
+        if (product == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         prodService.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/products/{id}")
-    public void updateProduct(@PathVariable int id, @RequestBody Product product) {
-        prodService.updateProduct(id, product);
+    public ResponseEntity<Product> updateProduct(@PathVariable int id, @RequestBody Product product,
+            @RequestPart MultipartFile imageFile) {
+        Product pro = null;
+        try {
+            pro = prodService.updateProduct(product, imageFile);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (pro == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(pro, HttpStatus.OK);
     }
 
     @GetMapping("/products/{id}/image")
@@ -79,5 +95,11 @@ public class ProductController {
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf(imageType))
                 .body(imageData);
+    }
+
+    @GetMapping("/products/search")
+    public ResponseEntity<List<Product>> searchProduct(@RequestParam String keyword) {
+        List<Product> products = prodService.searchProduct(keyword);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }

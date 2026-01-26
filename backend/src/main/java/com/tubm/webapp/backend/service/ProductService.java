@@ -34,7 +34,14 @@ public class ProductService {
         repo.deleteById(id);
     }
 
-    public void updateProduct(int id, Product product) {
-        repo.findById(id).ifPresent(p -> p.setName(product.getName()));
+    public Product updateProduct(Product product, MultipartFile imageFile) throws IOException {
+        product.setImageName(imageFile.getOriginalFilename());
+        product.setImageType(imageFile.getContentType());
+        product.setImageData(imageFile.getBytes());
+        return repo.save(product);
+    }
+
+    public List<Product> searchProduct(String keyword) {
+        return repo.searchProducts(keyword);
     }
 }
