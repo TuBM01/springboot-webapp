@@ -23,6 +23,12 @@ public class UserController {
         return ResponseEntity.ok(userService.register(user));
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody User user) {
+        System.out.println(user);
+        return ResponseEntity.ok(userService.verifyUser(user));
+    }
+
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
